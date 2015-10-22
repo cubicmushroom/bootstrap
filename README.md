@@ -10,3 +10,8 @@ Whilst it designed for internal use by those at Cubic Mushroom, it's made freely
 ## Getting Started
 
 ...
+
+
+## Stuff that we're going to add
+
+1. Codeception setup
