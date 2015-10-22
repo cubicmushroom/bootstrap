@@ -3,6 +3,8 @@
 namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class SetupCommand
@@ -26,4 +28,12 @@ class SetupCommand extends Command
             ->setDescription(self::DESCRIPTION)
             ->addArgument('path', InputArgument::OPTIONAL, 'Project path');
     }
+
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln('Hello world!');
+    }
+
+
 }
