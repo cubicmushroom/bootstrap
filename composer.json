@@ -14,9 +14,10 @@
     "symfony/console": "^2.7"
   },
   "require-dev"      : {
-    "phpspec/phpspec": "^2.3"
+    "phpspec/phpspec"        : "^2.3",
+    "phpspec/nyan-formatters": "^1.0"
   },
-  "autoload": {
+  "autoload"         : {
     "psr-4": {
       "CubicMushroom\\Tools\\ProjectToolbelt\\": "src/"
     }
