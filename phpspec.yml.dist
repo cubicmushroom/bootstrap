@@ -1,4 +1,6 @@
-formatter.name: dot
+formatter.name: nyan.cat
+extensions:
+  - PhpSpec\NyanFormattersExtension\Extension
 suites:
   default_suite:
     namespace:   CubicMushroom\Tools\ProjectToolbelt
