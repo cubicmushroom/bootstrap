@@ -1,0 +1,5 @@
+formatter.name: dot
+suites:
+  default_suite:
+    namespace:   CubicMushroom\Tools\ProjectToolbelt
+    psr4_prefix: CubicMushroom\Tools\ProjectToolbelt
