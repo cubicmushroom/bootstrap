@@ -2,7 +2,6 @@
 
 namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -14,14 +13,17 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class SetupCommand extends Command
 {
+    const NAME        = 'setup';
+    const DESCRIPTION = 'Sets up the toolbelt for the given project';
+
     /**
      * Configures the current command.
      */
     protected function configure()
     {
         $this
-            ->setName('setup')
-            ->setDescription('Sets up the toolbelt for the given project')
+            ->setName(Command::NAME.':'.self::NAME)
+            ->setDescription(self::DESCRIPTION)
             ->addArgument('path', InputArgument::OPTIONAL, 'Project path');
     }
 }

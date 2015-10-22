@@ -2,10 +2,11 @@
 
 namespace spec\CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 
+use CubicMushroom\Tools\ProjectToolbelt\Console\Command\Command;
 use CubicMushroom\Tools\ProjectToolbelt\Console\Command\SetupCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * Class SetupCommandSpec
@@ -23,7 +24,23 @@ class SetupCommandSpec extends ObjectBehavior
     function it_should_be_a_console_command()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->shouldBeAnInstanceOf(Command::class);
+        $this->shouldBeAnInstanceOf(SymfonyCommand::class);
+    }
+
+
+    function it_should_be_configured_correctly()
+    {
+        /** @var self|SetupCommand $this */
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->getName()->shouldReturn(Command::NAME.':setup');
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->getDescription()->shouldBeString();
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->getDescription()->shouldNotReturn('');
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->getDescription()->shouldReturn(SetupCommand::DESCRIPTION);
     }
 
 
