@@ -1,24 +1,28 @@
 {
-  "name"       : "cm-project-toolbelt",
+  "name": "cm-project-toolbelt",
   "description": "A tool to make the process of bootstrapping a project as simple as possible, and provide a simple way to run all development tasks",
-  "version"    : "0.0.0",
-  "license"    : "ISC",
-  "author"     : "Toby Griffiths <toby@cubicmushroom.co.uk> (http://tobyg.net)",
-  "keywords"   : [
+  "version": "0.0.0",
+  "license": "ISC",
+  "author": "Toby Griffiths <toby@cubicmushroom.co.uk> (http://tobyg.net)",
+  "keywords": [
     "project",
     "setup",
     "tooling"
   ],
-  "homepage"   : "https://github.com/cubicmushroom/bootstrap",
-  "repository" : {
+  "homepage": "https://github.com/cubicmushroom/bootstrap",
+  "repository": {
     "type": "git",
-    "url" : "https://github.com/cubicmushroom/bootstrap.git"
+    "url": "https://github.com/cubicmushroom/bootstrap.git"
   },
-  "bugs"       : {
+  "bugs": {
     "url": "https://github.com/cubicmushroom/bootstrap/issues"
   },
-  "main"       : "gulpfile.js",
-  "scripts"    : {
+  "main": "gulpfile.js",
+  "scripts": {
     "test": "gulp test"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-cm-phpspec-tasks": "^1.1.0"
   }
 }
