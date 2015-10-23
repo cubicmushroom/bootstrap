@@ -34,6 +34,6 @@ class SetupCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(array('command' => $command->getName()));
 
-        $this->assertRegExp('/Hello world/', $commandTester->getDisplay());
+        $this->assertFileExists(__DIR__.'/../../../_output/app_root/bin/toolbelt');
     }
 }
