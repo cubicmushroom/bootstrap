@@ -5,6 +5,7 @@ namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class SetupCommand
@@ -17,6 +18,8 @@ class SetupCommand extends Command
 {
     const NAME        = 'setup';
     const DESCRIPTION = 'Sets up the toolbelt for the given project';
+    const BINARY_FILE = 'toolbelt';
+
 
     /**
      * Configures the current command.
@@ -32,7 +35,15 @@ class SetupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Hello world!');
+        $fs = new Filesystem();
+
+        $binDir = TOOLBELT_BIN;
+
+        if (!$fs->exists($binDir)) {
+            $fs->mkdir($binDir);
+        }
+
+        $fs->touch($binDir.'/toolbelt');
     }
 
 

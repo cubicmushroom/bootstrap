@@ -5,9 +5,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 $fs = new Filesystem();
 
-$appRoot = __DIR__.'/_output/app_root';
-if (!$fs->exists($appRoot)) {
-    $fs->mkdir($appRoot);
+$testBinDir = __DIR__.'/_output/app_root/bin';
+if (!$fs->exists($testBinDir)) {
+    $fs->mkdir($testBinDir);
 }
 
-define('APP_ROOT', realpath($appRoot));
+define('TOOLBELT_BIN', realpath($testBinDir));
