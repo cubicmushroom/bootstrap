@@ -9,7 +9,11 @@ Whilst it designed for internal use by those at Cubic Mushroom, it's made freely
 
 ## Getting Started
 
-...
+Install via `composer`...
+
+    $ composer require cubicmushroom/project-toolbelt
+
+This installs the toolbelt package and installs the `toolbelt` command to the composer bin directory.
 
 
 ## Stuff that we're going to add
