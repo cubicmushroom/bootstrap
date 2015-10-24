@@ -28,5 +28,6 @@
     "psr-4": {
       "CubicMushroom\\Tools\\ProjectToolbelt\\": "src/"
     }
-  }
+  },
+  "bin": ["./bin/toolbelt"]
 }
