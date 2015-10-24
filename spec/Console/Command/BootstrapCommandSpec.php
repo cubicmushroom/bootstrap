@@ -2,22 +2,21 @@
 
 namespace spec\CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 
-use CubicMushroom\Tools\ProjectToolbelt\Console\Command\Command;
-use CubicMushroom\Tools\ProjectToolbelt\Console\Command\SetupCommand;
+use CubicMushroom\Tools\ProjectToolbelt\Console\Command\BootstrapCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
- * Class SetupCommandSpec
+ * Class BootstrapCommandSpec
  *
  * @package CubicMushroom\Tools\ProjectToolbelt
  */
-class SetupCommandSpec extends ObjectBehavior
+class BootstrapCommandSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetupCommand::class);
+        $this->shouldHaveType(BootstrapCommand::class);
     }
 
 
@@ -30,17 +29,17 @@ class SetupCommandSpec extends ObjectBehavior
 
     function it_should_be_configured_correctly()
     {
-        /** @var self|SetupCommand $this */
+        /** @var self|BootstrapCommand $this */
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->getName()->shouldReturn(Command::NAME.':setup');
+        $this->getName()->shouldReturn(BootstrapCommand::NAME);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $this->getDescription()->shouldBeString();
         /** @noinspection PhpUndefinedMethodInspection */
         $this->getDescription()->shouldNotReturn('');
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->getDescription()->shouldReturn(SetupCommand::DESCRIPTION);
+        $this->getDescription()->shouldReturn(BootstrapCommand::DESCRIPTION);
     }
 
 

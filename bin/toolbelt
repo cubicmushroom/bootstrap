@@ -3,7 +3,7 @@
 
 namespace CubicMushroom\Tools\ProjectToolbelt;
 
-use CubicMushroom\Tools\ProjectToolbelt\Console\Command\SetupCommand;
+use CubicMushroom\Tools\ProjectToolbelt\Console\Command\BootstrapCommand;
 use Symfony\Component\Console\Application;
 
 if (!defined('DS')) {
@@ -19,5 +19,5 @@ if (dirname(dirname(__FILE__)).DS.'vendor'.DS.'autoload.php') {
 }
 
 $application = new Application('Project Toolbelt');
-$application->add(new SetupCommand());
+$application->add(new BootstrapCommand());
 $application->run();

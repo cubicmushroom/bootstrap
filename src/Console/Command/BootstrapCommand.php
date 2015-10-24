@@ -2,21 +2,22 @@
 
 namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class SetupCommand
+ * Class BootstrapCommand
  *
  * @package CubicMushroom\Tools\ProjectToolbelt
  *
- * @see     \spec\CubicMushroom\Tools\ProjectToolbelt\Console\Command\SetupCommandSpec for spec
+ * @see     \spec\CubicMushroom\Tools\ProjectToolbelt\Console\Command\BootstrapCommandSpec for spec
  */
-class SetupCommand extends Command
+class BootstrapCommand extends Command
 {
-    const NAME        = 'setup';
+    const NAME        = 'bootstrap';
     const DESCRIPTION = 'Sets up the toolbelt for the given project';
     const BINARY_FILE = 'toolbelt';
 
@@ -27,7 +28,7 @@ class SetupCommand extends Command
     protected function configure()
     {
         $this
-            ->setName(Command::NAME.':'.self::NAME)
+            ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
             ->addArgument('path', InputArgument::OPTIONAL, 'Project path');
     }
