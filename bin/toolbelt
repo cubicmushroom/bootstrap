@@ -3,8 +3,8 @@
 
 namespace CubicMushroom\Tools\ProjectToolbelt;
 
+use CubicMushroom\Tools\ProjectToolbelt\Console\Command\SetupCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Finder\Finder;
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -19,15 +19,5 @@ if (dirname(dirname(__FILE__)).DS.'vendor'.DS.'autoload.php') {
 }
 
 $application = new Application('Project Toolbelt');
-
-/** @var Finder|\SplFileInfo[] $finder */
-$finder      = new Finder;
-$commandsDir = dirname(__DIR__).DS.'src'.DS.'Console'.DS.'Command';
-$finder->files()->in($commandsDir);
-
-foreach ($finder as $file) {
-    var_dump($file->getRealPath());
-}
-
-
+$application->add(new SetupCommand());
 $application->run();
