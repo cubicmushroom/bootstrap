@@ -16,9 +16,9 @@ namespace CubicMushroom\Tools\ProjectToolbelt\Codeception;
  *
  * @SuppressWarnings(PHPMD)
 */
-class UnitTester extends \Codeception\Actor
+class UnitWizard extends \Codeception\Actor
 {
-    use _generated\UnitTesterActions;
+    use _generated\UnitWizardActions;
 
    /**
     * Define custom actions here

@@ -1,5 +1,5 @@
 namespace: CubicMushroom\Tools\ProjectToolbelt\Codeception
-actor: Tester
+actor: Wizard
 paths:
     tests: tests
     log: tests/_output
