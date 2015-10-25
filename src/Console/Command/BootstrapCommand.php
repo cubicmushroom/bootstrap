@@ -21,6 +21,8 @@ class BootstrapCommand extends Command
     const DESCRIPTION = 'Sets up the toolbelt for the given project';
     const BINARY_FILE = 'toolbelt';
 
+    const ERROR_CODE_PATH_DOES_NOT_EXISTS = 1;
+
 
     /**
      * Configures the current command.
@@ -30,21 +32,50 @@ class BootstrapCommand extends Command
         $this
             ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
-            ->addArgument('path', InputArgument::OPTIONAL, 'Project path');
+            ->addArgument('path', InputArgument::OPTIONAL, 'Project path', getcwd());
     }
 
 
+    /**
+     * Executes the current command.
+     *
+     * This method is not abstract because you can use this class
+     * as a concrete class. In this case, instead of defining the
+     * execute() method, you set the code to execute by passing
+     * a Closure to the setCode() method.
+     *
+     * @param InputInterface  $input  An InputInterface instance
+     * @param OutputInterface $output An OutputInterface instance
+     *
+     * @return null|int null or 0 if everything went fine, or an error code
+     *
+     * @throws \LogicException When this abstract method is not implemented
+     *
+     * @see setCode()
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fs = new Filesystem();
+        $path     = $input->getArgument('path');
+        $realPath = realpath($path);
 
-        $binDir = TOOLBELT_BIN;
+        if (false === $path) {
+            // @todo - Add test for this error
+            $output->writeln("<error>Path $path does not exist</error>");
 
-        if (!$fs->exists($binDir)) {
-            $fs->mkdir($binDir);
+            return self::ERROR_CODE_PATH_DOES_NOT_EXISTS;
         }
 
-        $fs->touch($binDir.'/toolbelt');
+        $output->writeln('<info>Bootstrapping project in '.realpath($path).'</info>');
+
+        $fs = new Filesystem();
+
+        $output->writeln('<info>Creating package.json file</info>');
+        $fs->touch("{$path}/package.json");
+
+
+//        $output->writeln('<info>Creating gulpfile.js</info>');
+
+//        $fs->touch("$path/gulpfile.js");
     }
 
 
