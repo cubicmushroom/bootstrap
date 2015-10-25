@@ -1,0 +1,28 @@
+{
+  "name"             : "cubicmushroom/test-project",
+  "description"      : "A test project to test this package against",
+  "version"          : "0.0.0",
+  "license"          : "ISC",
+  "authors"          : [
+    {
+      "name" : "Toby Griffiths",
+      "email": "toby@cubicmushroom.co.uk"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require"          : {
+    "symfony/console"   : "^2.7",
+    "symfony/filesystem": "^2.7"
+  },
+  "require-dev"      : {
+    "codeception/codeception"       : "^2.1",
+    "codeception/phpbuiltinserver"  : "^1.2",
+    "codeception/specify"           : "^0.4.2",
+    "codeception/verify"            : "^0.2.7",
+    "cubicmushroom/project-toolbelt": "dev-master",
+    "monolog/monolog"               : "^1.17",
+    "phpspec/nyan-formatters"       : "^1.0",
+    "phpspec/phpspec"               : "^2.3",
+    "phpunit/php-invoker"           : "^1.1"
+  }
+}

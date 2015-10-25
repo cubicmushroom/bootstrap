@@ -21,7 +21,42 @@ class BootstrapCommand extends Command
     const DESCRIPTION = 'Sets up the toolbelt for the given project';
     const BINARY_FILE = 'toolbelt';
 
-    const ERROR_CODE_PATH_DOES_NOT_EXISTS = 1;
+    const ERROR_CODE_PATH_DOES_NOT_EXISTS       = 1;
+    const ERROR_CODE_COMPOSER_JSON_FILE_MISSING = 2;
+    const ERROR_CODE_COMPOSER_JSON_DATA_MISSING = 3;
+    const ERROR_CODE_NPM_INSTALL_FAILED         = 4;
+
+
+    /**
+     * If set, this will be the effective working directory for the command, unless a specific path is given
+     *
+     * @var string
+     */
+    protected $workingDir;
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Constructor
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Creates a new instance of the tool with a pre-determined path
+     *
+     * This is used for testing
+     *
+     * @param string $defaultPath
+     * @param null   $name
+     *
+     * @return static
+     */
+    public static function createWithDefaultPath($defaultPath, $name = null)
+    {
+        /** @var self $instance */
+        $instance = new static($name);
+
+        $instance->getDefinition()->getArgument('path')->setDefault($defaultPath);
+
+        return $instance;
+    }
 
 
     /**
@@ -29,10 +64,12 @@ class BootstrapCommand extends Command
      */
     protected function configure()
     {
+        $fallbackPath = $this->workingDir ?: getcwd();
+
         $this
             ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
-            ->addArgument('path', InputArgument::OPTIONAL, 'Project path', getcwd());
+            ->addArgument('path', InputArgument::OPTIONAL, 'Project path', $fallbackPath);
     }
 
 
@@ -55,6 +92,8 @@ class BootstrapCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $fs = new Filesystem();
+
         $path     = $input->getArgument('path');
         $realPath = realpath($path);
 
@@ -65,18 +104,51 @@ class BootstrapCommand extends Command
             return self::ERROR_CODE_PATH_DOES_NOT_EXISTS;
         }
 
-        $output->writeln('<info>Bootstrapping project in '.realpath($path).'</info>');
+        $output->writeln("<info>Bootstrapping project in {$realPath}</info>");
 
-        $fs = new Filesystem();
+        /**
+         * Get composer details
+         */
+
+        $composerFile = "$realPath/composer.json";
+        if (!$fs->exists($composerFile)) {
+            // @todo - Add test for this error
+            $output->writeln("<error>Missing composer.json file</error>");
+
+            return self::ERROR_CODE_COMPOSER_JSON_FILE_MISSING;
+        }
+        $composerJson = @json_decode(file_get_contents($composerFile), true);
+
+        if (empty($composerJson)) {
+            // @todo - Add test for this error
+            $output->writeln("<error>Unable to read composer.json file contents</error>");
+
+            return self::ERROR_CODE_COMPOSER_JSON_DATA_MISSING;
+        }
 
         $output->writeln('<info>Creating package.json file</info>');
-        $fs->touch("{$path}/package.json");
 
+        $packageJson = [
+            'name'            => str_replace('/', '-', $composerJson['name']),
+            'description'     => $composerJson['description'],
+            'version'         => $composerJson['version'],
+            'license'         => $composerJson['license'],
+            'authors'         => $composerJson['authors'],
+            'devDependencies' => [
+                "gulp"                  => "^3.9.0",
+                "gulp-cm-phpspec-tasks" => "^1.1.0",
+                "gulp-codeception"      => "^0.5.0",
+                "gulp-notify"           => "^2.2.0",
+            ],
+        ];
+        $fs->dumpFile("{$realPath}/package.json", json_encode($packageJson, JSON_PRETTY_PRINT));
 
-//        $output->writeln('<info>Creating gulpfile.js</info>');
+        passthru("cd {$realPath} && npm install", $returnCode);
 
-//        $fs->touch("$path/gulpfile.js");
+        if (0 !== $returnCode) {
+            return self::ERROR_CODE_NPM_INSTALL_FAILED;
+        }
+
+        return 0;
     }
-
-
 }

@@ -11,6 +11,12 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ConsoleCommand extends Module
 {
+    const CONFIG_TEST_PATH = 'test_path';
+
+    /**
+     * @var array
+     */
+    protected $requiredFields = [self::CONFIG_TEST_PATH];
 
     /**
      * @var CommandTester
@@ -29,7 +35,9 @@ class ConsoleCommand extends Module
     public function _initialize()
     {
         $this->application = new Application();
-        $this->application->add(new BootstrapCommand());
+        $this->application->add(
+            BootstrapCommand::createWithDefaultPath($this->_getConfig(self::CONFIG_TEST_PATH))
+        );
     }
 
 

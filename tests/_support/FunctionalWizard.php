@@ -1,6 +1,9 @@
 <?php
 namespace CubicMushroom\Tools\ProjectToolbelt\Codeception;
 
+use Codeception\Scenario;
+use CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\Composer;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -15,12 +18,8 @@ namespace CubicMushroom\Tools\ProjectToolbelt\Codeception;
  * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class FunctionalWizard extends \Codeception\Actor
 {
     use _generated\FunctionalWizardActions;
-
-   /**
-    * Define custom actions here
-    */
 }

@@ -2,5 +2,14 @@ class_name: FunctionalWizard
 modules:
     enabled:
         - Filesystem
-        - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\Composer
+        - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\JsonFile
         - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\ConsoleCommand
+        - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\Functional
+
+    config:
+        \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\JsonFile:
+            project_root: tests/_output/app_root
+        \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\ConsoleCommand:
+            test_path: tests/_output/app_root
+        \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\Functional:
+            test_path: tests/_output/app_root
