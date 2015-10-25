@@ -28,48 +28,14 @@ class BootstrapCommand extends Command
 
 
     /**
-     * If set, this will be the effective working directory for the command, unless a specific path is given
-     *
-     * @var string
-     */
-    protected $workingDir;
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Constructor
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * Creates a new instance of the tool with a pre-determined path
-     *
-     * This is used for testing
-     *
-     * @param string $defaultPath
-     * @param null   $name
-     *
-     * @return static
-     */
-    public static function createWithDefaultPath($defaultPath, $name = null)
-    {
-        /** @var self $instance */
-        $instance = new static($name);
-
-        $instance->getDefinition()->getArgument('path')->setDefault($defaultPath);
-
-        return $instance;
-    }
-
-
-    /**
      * Configures the current command.
      */
     protected function configure()
     {
-        $fallbackPath = $this->workingDir ?: getcwd();
-
         $this
             ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
-            ->addArgument('path', InputArgument::OPTIONAL, 'Project path', $fallbackPath);
+            ->addArgument('path', InputArgument::REQUIRED, 'Project directory');
     }
 
 

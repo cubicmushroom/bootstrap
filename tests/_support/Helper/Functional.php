@@ -86,6 +86,12 @@ class Functional extends Module
     }
 
 
+    public function getTheProjectTestRoot()
+    {
+        return $this->projectRoot;
+    }
+
+
     public function haveInitialisedComposer()
     {
         $this->fs->seeFileFound('composer.json', $this->projectRoot);

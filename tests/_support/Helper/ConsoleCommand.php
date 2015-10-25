@@ -35,9 +35,7 @@ class ConsoleCommand extends Module
     public function _initialize()
     {
         $this->application = new Application();
-        $this->application->add(
-            BootstrapCommand::createWithDefaultPath($this->_getConfig(self::CONFIG_TEST_PATH))
-        );
+        $this->application->add(new BootstrapCommand());
     }
 
 
