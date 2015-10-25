@@ -6,9 +6,9 @@ use CubicMushroom\Tools\ProjectToolbelt\Codeception\FunctionalWizard;
 $I = new FunctionalWizard($scenario);
 $I->wantTo('bootstrap a new, empty project');
 
-$I->haveInitialisedComposer();
-
 $I->cleanDir(TEST_ROOT);
+$I->haveInitialisedComposerIn(TEST_ROOT);
+
 $I->runTheCommand('bootstrap', ['path' => TEST_ROOT]);
 $I->seeOutput('Bootstrapping project in '.TEST_ROOT);
 $I->seeOutput('Creating package.json file');

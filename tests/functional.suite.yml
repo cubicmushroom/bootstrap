@@ -2,4 +2,5 @@ class_name: FunctionalWizard
 modules:
     enabled:
         - Filesystem
+        - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\Composer
         - \CubicMushroom\Tools\ProjectToolbelt\Codeception\Helper\ConsoleCommand
