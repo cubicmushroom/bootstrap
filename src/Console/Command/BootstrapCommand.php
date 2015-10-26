@@ -5,7 +5,6 @@ namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -37,9 +36,6 @@ class BootstrapCommand extends Command
         $this
             ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
-            ->addOption(
-                'update-package', InputOption::VALUE_NONE, 'If provided, will update an existing package.json file'
-            )
             ->addArgument('path', InputArgument::REQUIRED, 'Project directory');
     }
 
@@ -113,36 +109,18 @@ class BootstrapCommand extends Command
             }
         }
 
-        // Update the project settings, if they're not already set
-        if (empty($packageJson['name']) || $input->getOption('update-package')) {
-            $packageJson['name'] = str_replace('/', '-', $composerJson['name']);
-        }
-        if (empty($packageJson['description']) || $input->getOption('update-package')) {
-            $packageJson['description'] = $composerJson['description'];
-        }
-        if (empty($packageJson['version']) || $input->getOption('update-package')) {
-            $packageJson['version'] = $composerJson['version'];
-        }
-        if (empty($packageJson['license']) || $input->getOption('update-package')) {
-            $packageJson['license'] = $composerJson['license'];
-        }
-        if (empty($packageJson['authors']) || $input->getOption('update-package')) {
-            $packageJson['authors'] = $composerJson['authors'];
-        }
+        // Update the project settings
+        $packageJson['name']        = str_replace('/', '-', $composerJson['name']);
+        $packageJson['description'] = $composerJson['description'];
+        $packageJson['version']     = $composerJson['version'];
+        $packageJson['license']     = $composerJson['license'];
+        $packageJson['authors']     = $composerJson['authors'];
 
-        // Update the package versions, even if t hey are already set
-        if ($input->getOption('update-package')) {
-            $packageJson['devDependencies']['gulp'] = "^3.9.0";
-        }
-        if ($input->getOption('update-package')) {
-            $packageJson['devDependencies']['gulp-cm-phpspec-tasks'] = "^1.1.0";
-        }
-        if ($input->getOption('update-package')) {
-            $packageJson['devDependencies']['gulp-codeception'] = "^0.5.0";
-        }
-        if ($input->getOption('update-package')) {
-            $packageJson['devDependencies']['gulp-notify'] = "^2.2.0";
-        }
+        // Update the package versions
+        $packageJson['devDependencies']['gulp']                  = "^3.9.0";
+        $packageJson['devDependencies']['gulp-cm-phpspec-tasks'] = "^1.1.0";
+        $packageJson['devDependencies']['gulp-codeception']      = "^0.5.0";
+        $packageJson['devDependencies']['gulp-notify']           = "^2.2.0";
 
         $fs->dumpFile($packageJsonFile, json_encode($packageJson, JSON_PRETTY_PRINT));
 
