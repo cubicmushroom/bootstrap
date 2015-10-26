@@ -5,6 +5,7 @@ namespace CubicMushroom\Tools\ProjectToolbelt\Console\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -24,7 +25,8 @@ class BootstrapCommand extends Command
     const ERROR_CODE_PATH_DOES_NOT_EXISTS       = 1;
     const ERROR_CODE_COMPOSER_JSON_FILE_MISSING = 2;
     const ERROR_CODE_COMPOSER_JSON_DATA_MISSING = 3;
-    const ERROR_CODE_NPM_INSTALL_FAILED         = 4;
+    const ERROR_CODE_PACKAGE_JSON_DATA_MISSING  = 4;
+    const ERROR_CODE_NPM_INSTALL_FAILED         = 5;
 
 
     /**
@@ -35,6 +37,9 @@ class BootstrapCommand extends Command
         $this
             ->setName(self::NAME)
             ->setDescription(self::DESCRIPTION)
+            ->addOption(
+                'update-package', InputOption::VALUE_NONE, 'If provided, will update an existing package.json file'
+            )
             ->addArgument('path', InputArgument::REQUIRED, 'Project directory');
     }
 
@@ -63,7 +68,7 @@ class BootstrapCommand extends Command
         $path     = $input->getArgument('path');
         $realPath = realpath($path);
 
-        if (false === $path) {
+        if (false === $realPath) {
             // @todo - Add test for this error
             $output->writeln("<error>Path $path does not exist</error>");
 
@@ -92,22 +97,54 @@ class BootstrapCommand extends Command
             return self::ERROR_CODE_COMPOSER_JSON_DATA_MISSING;
         }
 
-        $output->writeln('<info>Creating package.json file</info>');
+        $packageJsonFile = "{$realPath}/package.json";
+        if (!$fs->exists($packageJsonFile)) {
+            $output->writeln('<info>Creating package.json file</info>');
+            $packageJson = [];
+        } else {
+            $output->writeln('<info>Updating existing package.json file</info>');
+            $packageJson = @json_decode(file_get_contents($packageJsonFile), true);
 
-        $packageJson = [
-            'name'            => str_replace('/', '-', $composerJson['name']),
-            'description'     => $composerJson['description'],
-            'version'         => $composerJson['version'],
-            'license'         => $composerJson['license'],
-            'authors'         => $composerJson['authors'],
-            'devDependencies' => [
-                "gulp"                  => "^3.9.0",
-                "gulp-cm-phpspec-tasks" => "^1.1.0",
-                "gulp-codeception"      => "^0.5.0",
-                "gulp-notify"           => "^2.2.0",
-            ],
-        ];
-        $fs->dumpFile("{$realPath}/package.json", json_encode($packageJson, JSON_PRETTY_PRINT));
+            if (empty($packageJson)) {
+                // @todo - Add test for this error
+                $output->writeln("<error>Unable to read composer.json file contents</error>");
+
+                return self::ERROR_CODE_PACKAGE_JSON_DATA_MISSING;
+            }
+        }
+
+        // Update the project settings, if they're not already set
+        if (empty($packageJson['name']) || $input->getOption('update-package')) {
+            $packageJson['name'] = str_replace('/', '-', $composerJson['name']);
+        }
+        if (empty($packageJson['description']) || $input->getOption('update-package')) {
+            $packageJson['description'] = $composerJson['description'];
+        }
+        if (empty($packageJson['version']) || $input->getOption('update-package')) {
+            $packageJson['version'] = $composerJson['version'];
+        }
+        if (empty($packageJson['license']) || $input->getOption('update-package')) {
+            $packageJson['license'] = $composerJson['license'];
+        }
+        if (empty($packageJson['authors']) || $input->getOption('update-package')) {
+            $packageJson['authors'] = $composerJson['authors'];
+        }
+
+        // Update the package versions, even if t hey are already set
+        if ($input->getOption('update-package')) {
+            $packageJson['devDependencies']['gulp'] = "^3.9.0";
+        }
+        if ($input->getOption('update-package')) {
+            $packageJson['devDependencies']['gulp-cm-phpspec-tasks'] = "^1.1.0";
+        }
+        if ($input->getOption('update-package')) {
+            $packageJson['devDependencies']['gulp-codeception'] = "^0.5.0";
+        }
+        if ($input->getOption('update-package')) {
+            $packageJson['devDependencies']['gulp-notify'] = "^2.2.0";
+        }
+
+        $fs->dumpFile($packageJsonFile, json_encode($packageJson, JSON_PRETTY_PRINT));
 
         passthru("cd {$realPath} && npm install", $returnCode);
 
